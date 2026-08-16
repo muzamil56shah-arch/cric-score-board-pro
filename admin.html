@@ -2,206 +2,346 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Cric Score Board Pro - Admin</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-*{box-sizing:border-box}
+*{
+    box-sizing:border-box;
+}
+
 body{
     margin:0;
     font-family:Arial,sans-serif;
-    background:#08132f;
+    background:#071225;
     color:white;
 }
-.container{
-    max-width:900px;
-    margin:auto;
-    padding:25px;
-}
-h1{
+
+.header{
+    background:#0d1f45;
+    padding:22px;
     text-align:center;
-    margin-bottom:25px;
+    font-size:25px;
+    font-weight:bold;
 }
-.card{
-    background:#111f43;
+
+.container{
+    max-width:800px;
+    margin:30px auto;
     padding:20px;
-    border-radius:15px;
-    margin-bottom:20px;
 }
+
+.card{
+    background:#101f38;
+    border-radius:16px;
+    padding:25px;
+    box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+
+h2{
+    margin-top:0;
+    color:#38d9a9;
+}
+
+label{
+    display:block;
+    margin-top:18px;
+    margin-bottom:7px;
+    font-weight:bold;
+}
+
 input{
     width:100%;
     padding:14px;
-    margin:7px 0;
-    border:0;
     border-radius:8px;
+    border:1px solid #344765;
+    background:#071225;
+    color:white;
     font-size:16px;
 }
-.score{
-    text-align:center;
-    font-size:48px;
-    font-weight:bold;
-    margin:20px 0;
-}
-.buttons{
+
+.score-box{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
 }
+
 button{
+    width:100%;
+    margin-top:25px;
     padding:15px;
     border:0;
     border-radius:10px;
+    background:#16c784;
+    color:white;
     font-size:18px;
     font-weight:bold;
     cursor:pointer;
 }
-.run{background:#16a085;color:white}
-.special{background:#f39c12;color:white}
-.wicket{background:#e74c3c;color:white}
-.reset{background:#555;color:white}
-.save{background:#00b894;color:white;width:100%;margin-top:15px}
+
+button:hover{
+    background:#11a96e;
+}
+
+#message{
+    margin-top:18px;
+    padding:12px;
+    border-radius:8px;
+    display:none;
+}
+
+.success{
+    background:#123f2d;
+    color:#58e6a9;
+}
+
+.error{
+    background:#4a1720;
+    color:#ff8c9a;
+}
+
+.current{
+    margin-top:25px;
+    padding:18px;
+    background:#08172d;
+    border-radius:12px;
+}
+
+.current-score{
+    font-size:30px;
+    font-weight:bold;
+    margin-top:10px;
+}
 </style>
 </head>
 
 <body>
 
+<div class="header">
+    🏏 Cric Score Board Pro — Admin Panel
+</div>
+
 <div class="container">
 
-<h1>🏏 Cric Score Board Pro</h1>
-
 <div class="card">
 
-<h2>Match Information</h2>
+<h2>Live Match Control</h2>
 
-<input id="team" value="AL MAHMOOD" placeholder="Batting Team">
+<label>Team A</label>
+<input id="teamA" type="text" placeholder="Example: AL MAHMOOD">
 
-<input id="batsman1" value="Ahmed" placeholder="Batsman 1">
+<label>Team B</label>
+<input id="teamB" type="text" placeholder="Example: AHMED XI">
 
-<input id="batsman2" value="Bilal" placeholder="Batsman 2">
+<div class="score-box">
+
+<div>
+<label>Runs</label>
+<input id="runs" type="number" value="0" min="0">
+</div>
+
+<div>
+<label>Wickets</label>
+<input id="wickets" type="number" value="0" min="0" max="10">
+</div>
 
 </div>
 
-<div class="card">
-
-<div class="score">
-<span id="runs">0</span>/<span id="wickets">0</span>
-</div>
-
-<p style="text-align:center">
-Overs: <b id="overs">0.0</b>
-</p>
-
-<div class="buttons">
-
-<button class="run" onclick="addRun(0)">DOT</button>
-
-<button class="run" onclick="addRun(1)">+1 RUN</button>
-
-<button class="run" onclick="addRun(2)">+2 RUN</button>
-
-<button class="special" onclick="addRun(3)">+3 RUN</button>
-
-<button class="special" onclick="addRun(4)">4</button>
-
-<button class="special" onclick="addRun(6)">6</button>
-
-<button class="wicket" onclick="addWicket()">WICKET</button>
-
-<button class="reset" onclick="newOver()">NEW OVER</button>
-
-<button class="reset" onclick="resetScore()">RESET</button>
-
-</div>
-
-<button class="save" onclick="saveScore()">
-UPDATE LIVE OVERLAY
+<button onclick="saveScore()">
+    🔴 UPDATE LIVE SCORE
 </button>
 
+<div id="message"></div>
+
+<div class="current">
+
+<strong>Current Live Score</strong>
+
+<div id="currentScore" class="current-score">
+    No match data
 </div>
 
 </div>
+
+</div>
+
+</div>
+
 
 <script>
 
-let score={
-    team:"AL MAHMOOD",
-    runs:0,
-    wickets:0,
-    balls:0,
-    batsman1:"Ahmed",
-    batsman2:"Bilal"
-};
+const SUPABASE_URL =
+"https://ivysqllrtppkjsrvyvuj.supabase.co";
 
-function addRun(run){
+const SUPABASE_KEY =
+"sb_publishable_CWg86WW1Fcs-u1hgJ6d2Qg_q8M2wjIp";
 
-    score.runs += run;
-    score.balls++;
+const supabaseClient =
+supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
-    display();
 
+let matchId = null;
+
+
+// Load existing match
+async function loadMatch(){
+
+    const { data, error } = await supabaseClient
+        .from("matches")
+        .select("*")
+        .order("created_at", { ascending:false })
+        .limit(1);
+
+    if(error){
+        showMessage(error.message, false);
+        return;
+    }
+
+    if(data && data.length > 0){
+
+        const match = data[0];
+
+        matchId = match.id;
+
+        document.getElementById("teamA").value =
+            match.team_a || "";
+
+        document.getElementById("teamB").value =
+            match.team_b || "";
+
+        document.getElementById("runs").value =
+            match.runs || 0;
+
+        document.getElementById("wickets").value =
+            match.wickets || 0;
+
+        showCurrent(match);
+    }
 }
 
-function addWicket(){
 
-    score.wickets++;
+// Save / Update score
+async function saveScore(){
 
-    score.balls++;
+    const teamA =
+        document.getElementById("teamA").value.trim();
 
-    display();
+    const teamB =
+        document.getElementById("teamB").value.trim();
 
-}
+    const runs =
+        Number(document.getElementById("runs").value);
 
-function newOver(){
+    const wickets =
+        Number(document.getElementById("wickets").value);
 
-    score.balls = Math.ceil(score.balls/6)*6;
 
-    display();
+    if(!teamA || !teamB){
 
-}
+        showMessage(
+            "Please enter both team names.",
+            false
+        );
 
-function resetScore(){
+        return;
+    }
 
-    score.runs=0;
-    score.wickets=0;
-    score.balls=0;
 
-    display();
+    const matchData = {
 
-}
+        team_a: teamA,
+        team_b: teamB,
+        runs: runs,
+        wickets: wickets
 
-function display(){
+    };
 
-    document.getElementById("runs").innerText=score.runs;
 
-    document.getElementById("wickets").innerText=score.wickets;
+    let result;
 
-    let over=Math.floor(score.balls/6);
 
-    let ball=score.balls%6;
+    // Existing match → UPDATE
+    if(matchId){
 
-    document.getElementById("overs").innerText=
-        over+"."+ball;
+        result = await supabaseClient
+            .from("matches")
+            .update(matchData)
+            .eq("id", matchId)
+            .select()
+            .single();
 
-}
+    }
 
-function saveScore(){
+    // No match → CREATE
+    else{
 
-    score.team=document.getElementById("team").value;
+        result = await supabaseClient
+            .from("matches")
+            .insert(matchData)
+            .select()
+            .single();
 
-    score.batsman1=document.getElementById("batsman1").value;
+    }
 
-    score.batsman2=document.getElementById("batsman2").value;
 
-    localStorage.setItem(
-        "cricScorePro",
-        JSON.stringify(score)
+    if(result.error){
+
+        showMessage(
+            result.error.message,
+            false
+        );
+
+        return;
+    }
+
+
+    matchId = result.data.id;
+
+    showCurrent(result.data);
+
+    showMessage(
+        "✅ Live score updated successfully!",
+        true
     );
+}
 
-    alert("LIVE SCORE UPDATED!");
+
+// Display score
+function showCurrent(match){
+
+    document.getElementById("currentScore").innerHTML =
+
+        `${match.team_a} 
+        <strong>${match.runs}/${match.wickets}</strong>
+        ${match.team_b}`;
 
 }
 
-display();
+
+// Message
+function showMessage(text, success){
+
+    const box =
+        document.getElementById("message");
+
+    box.style.display = "block";
+
+    box.className =
+        success ? "success" : "error";
+
+    box.innerText = text;
+
+}
+
+
+// Start
+loadMatch();
 
 </script>
 
