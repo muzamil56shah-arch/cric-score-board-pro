@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Cric Score Board Pro - Free Overlay</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Cric Score Board Pro - Live Overlay</title>
 
 <style>
 *{
@@ -21,7 +20,6 @@ html,body{
     font-family:Arial,Helvetica,sans-serif;
 }
 
-/* Main Overlay */
 .overlay{
     position:absolute;
     left:50%;
@@ -31,7 +29,6 @@ html,body{
     max-width:94%;
 }
 
-/* Branding */
 .brand{
     position:absolute;
     left:0;
@@ -39,12 +36,32 @@ html,body{
     margin-bottom:8px;
     color:white;
     font-size:18px;
-    font-weight:800;
+    font-weight:bold;
     text-shadow:0 2px 5px #000;
-    letter-spacing:.5px;
 }
 
-/* Score Bar */
+.live{
+    position:absolute;
+    right:0;
+    bottom:100%;
+    margin-bottom:8px;
+    background:#e51f2f;
+    color:white;
+    padding:6px 13px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.live-dot{
+    display:inline-block;
+    width:7px;
+    height:7px;
+    background:white;
+    border-radius:50%;
+    margin-right:5px;
+}
+
 .scorebar{
     height:82px;
     display:flex;
@@ -54,7 +71,6 @@ html,body{
     box-shadow:0 5px 18px rgba(0,0,0,.55);
 }
 
-/* Team */
 .team{
     width:23%;
     background:linear-gradient(135deg,#101d3d,#172e5e);
@@ -76,7 +92,6 @@ html,body{
     margin-top:4px;
 }
 
-/* Score */
 .score{
     width:24%;
     background:linear-gradient(135deg,#111,#252525);
@@ -94,7 +109,6 @@ html,body{
     margin-left:6px;
 }
 
-/* Overs */
 .overs{
     width:14%;
     background:#202020;
@@ -114,7 +128,6 @@ html,body{
     opacity:.7;
 }
 
-/* Batsmen */
 .players{
     flex:1;
     background:linear-gradient(135deg,#063c38,#087064);
@@ -136,31 +149,6 @@ html,body{
     color:#ffe66d;
 }
 
-/* Live */
-.live{
-    position:absolute;
-    right:0;
-    bottom:100%;
-    margin-bottom:8px;
-    background:#e51f2f;
-    color:white;
-    padding:6px 13px;
-    border-radius:20px;
-    font-size:12px;
-    font-weight:bold;
-    box-shadow:0 2px 8px rgba(0,0,0,.5);
-}
-
-.live-dot{
-    display:inline-block;
-    width:7px;
-    height:7px;
-    background:white;
-    border-radius:50%;
-    margin-right:5px;
-}
-
-/* Mobile */
 @media(max-width:700px){
 
     .overlay{
@@ -240,35 +228,35 @@ html,body{
 
     <div class="scorebar">
 
-        <!-- TEAM -->
         <div class="team">
-            <div class="team-name">AL MAHMOOD</div>
-            <div class="team-status">Batting</div>
+            <div class="team-name" id="teamName">
+                AL MAHMOOD
+            </div>
+            <div class="team-status">
+                Batting
+            </div>
         </div>
 
-        <!-- SCORE -->
         <div class="score">
-            127/4
-            <span>(15.2)</span>
+            <span id="runs">0</span>/<span id="wickets">0</span>
+            <span id="scoreOvers">(0.0)</span>
         </div>
 
-        <!-- OVERS -->
         <div class="overs">
-            <strong>15.2</strong>
+            <strong id="overs">0.0</strong>
             <small>OVERS</small>
         </div>
 
-        <!-- PLAYERS -->
         <div class="players">
 
             <div class="player">
-                <span>Ahmed</span>
-                <b>52*</b>
+                <span id="player1">Ahmed</span>
+                <b>LIVE</b>
             </div>
 
             <div class="player">
-                <span>Bilal</span>
-                <b>31</b>
+                <span id="player2">Bilal</span>
+                <b>BAT</b>
             </div>
 
         </div>
@@ -276,6 +264,71 @@ html,body{
     </div>
 
 </div>
+
+<script>
+
+function loadScore(){
+
+    const saved = localStorage.getItem("cricScorePro");
+
+    if(!saved){
+        return;
+    }
+
+    try{
+
+        const score = JSON.parse(saved);
+
+        document.getElementById("teamName").innerText =
+            score.team || "TEAM A";
+
+        document.getElementById("runs").innerText =
+            score.runs || 0;
+
+        document.getElementById("wickets").innerText =
+            score.wickets || 0;
+
+        const balls = score.balls || 0;
+
+        const over = Math.floor(balls / 6);
+        const ball = balls % 6;
+
+        const overs = over + "." + ball;
+
+        document.getElementById("overs").innerText = overs;
+
+        document.getElementById("scoreOvers").innerText =
+            "(" + overs + ")";
+
+        document.getElementById("player1").innerText =
+            score.batsman1 || "Batsman 1";
+
+        document.getElementById("player2").innerText =
+            score.batsman2 || "Batsman 2";
+
+    }catch(error){
+
+        console.log("Score data error:",error);
+
+    }
+}
+
+/* Load score when overlay opens */
+loadScore();
+
+/* Automatically update when Admin Panel changes score */
+window.addEventListener("storage", function(event){
+
+    if(event.key === "cricScorePro"){
+        loadScore();
+    }
+
+});
+
+/* Check every second as an additional refresh */
+setInterval(loadScore,1000);
+
+</script>
 
 </body>
 </html>
