@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cric Score Board Pro - Admin</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#08132f;
+    color:white;
+}
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:25px;
+}
+h1{
+    text-align:center;
+    margin-bottom:25px;
+}
+.card{
+    background:#111f43;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:20px;
+}
+input{
+    width:100%;
+    padding:14px;
+    margin:7px 0;
+    border:0;
+    border-radius:8px;
+    font-size:16px;
+}
+.score{
+    text-align:center;
+    font-size:48px;
+    font-weight:bold;
+    margin:20px 0;
+}
+.buttons{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+button{
+    padding:15px;
+    border:0;
+    border-radius:10px;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+}
+.run{background:#16a085;color:white}
+.special{background:#f39c12;color:white}
+.wicket{background:#e74c3c;color:white}
+.reset{background:#555;color:white}
+.save{background:#00b894;color:white;width:100%;margin-top:15px}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🏏 Cric Score Board Pro</h1>
+
+<div class="card">
+
+<h2>Match Information</h2>
+
+<input id="team" value="AL MAHMOOD" placeholder="Batting Team">
+
+<input id="batsman1" value="Ahmed" placeholder="Batsman 1">
+
+<input id="batsman2" value="Bilal" placeholder="Batsman 2">
+
+</div>
+
+<div class="card">
+
+<div class="score">
+<span id="runs">0</span>/<span id="wickets">0</span>
+</div>
+
+<p style="text-align:center">
+Overs: <b id="overs">0.0</b>
+</p>
+
+<div class="buttons">
+
+<button class="run" onclick="addRun(0)">DOT</button>
+
+<button class="run" onclick="addRun(1)">+1 RUN</button>
+
+<button class="run" onclick="addRun(2)">+2 RUN</button>
+
+<button class="special" onclick="addRun(3)">+3 RUN</button>
+
+<button class="special" onclick="addRun(4)">4</button>
+
+<button class="special" onclick="addRun(6)">6</button>
+
+<button class="wicket" onclick="addWicket()">WICKET</button>
+
+<button class="reset" onclick="newOver()">NEW OVER</button>
+
+<button class="reset" onclick="resetScore()">RESET</button>
+
+</div>
+
+<button class="save" onclick="saveScore()">
+UPDATE LIVE OVERLAY
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+let score={
+    team:"AL MAHMOOD",
+    runs:0,
+    wickets:0,
+    balls:0,
+    batsman1:"Ahmed",
+    batsman2:"Bilal"
+};
+
+function addRun(run){
+
+    score.runs += run;
+    score.balls++;
+
+    display();
+
+}
+
+function addWicket(){
+
+    score.wickets++;
+
+    score.balls++;
+
+    display();
+
+}
+
+function newOver(){
+
+    score.balls = Math.ceil(score.balls/6)*6;
+
+    display();
+
+}
+
+function resetScore(){
+
+    score.runs=0;
+    score.wickets=0;
+    score.balls=0;
+
+    display();
+
+}
+
+function display(){
+
+    document.getElementById("runs").innerText=score.runs;
+
+    document.getElementById("wickets").innerText=score.wickets;
+
+    let over=Math.floor(score.balls/6);
+
+    let ball=score.balls%6;
+
+    document.getElementById("overs").innerText=
+        over+"."+ball;
+
+}
+
+function saveScore(){
+
+    score.team=document.getElementById("team").value;
+
+    score.batsman1=document.getElementById("batsman1").value;
+
+    score.batsman2=document.getElementById("batsman2").value;
+
+    localStorage.setItem(
+        "cricScorePro",
+        JSON.stringify(score)
+    );
+
+    alert("LIVE SCORE UPDATED!");
+
+}
+
+display();
+
+</script>
+
+</body>
+</html>
