@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cric Score Board Pro - Overlay Themes</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#050b1c;
+    color:white;
+    min-height:100vh;
+}
+
+.header{
+    background:#0b1d46;
+    padding:22px 6%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid #233a70;
+}
+
+.logo{
+    font-size:25px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#20d6a3;
+}
+
+.back-btn{
+    text-decoration:none;
+    color:white;
+    background:#16a085;
+    padding:11px 20px;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.hero{
+    text-align:center;
+    padding:55px 20px 35px;
+}
+
+.hero h1{
+    font-size:42px;
+    margin-bottom:12px;
+}
+
+.hero h1 span{
+    color:#ffc400;
+}
+
+.hero p{
+    color:#b9c4d9;
+    font-size:17px;
+}
+
+.container{
+    width:92%;
+    max-width:1200px;
+    margin:auto;
+    padding-bottom:60px;
+}
+
+.section-title{
+    text-align:center;
+    font-size:30px;
+    margin:30px 0;
+}
+
+.section-title span{
+    color:#ffc400;
+}
+
+.themes{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:24px;
+}
+
+.card{
+    background:#0b1328;
+    border:1px solid #263657;
+    border-radius:16px;
+    padding:16px;
+    overflow:hidden;
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    border-color:#ffc400;
+    box-shadow:0 10px 35px rgba(0,0,0,.35);
+}
+
+.preview{
+    height:150px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    margin-bottom:18px;
+    position:relative;
+}
+
+.preview-one{
+    background:linear-gradient(90deg,#173f91,#121a35,#0e8292);
+}
+
+.preview-two{
+    background:linear-gradient(90deg,#5900b8,#ec168c,#ff7200);
+}
+
+.preview-three{
+    background:linear-gradient(90deg,#071b38,#00a878,#082a50);
+}
+
+.preview-four{
+    background:linear-gradient(90deg,#101010,#d59b00,#262626);
+}
+
+.score{
+    width:88%;
+    background:rgba(5,10,25,.9);
+    border-radius:8px;
+    padding:13px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:13px;
+}
+
+.score strong{
+    font-size:22px;
+}
+
+.team{
+    color:#fff;
+}
+
+.live{
+    position:absolute;
+    top:8px;
+    right:8px;
+    background:#ed3345;
+    padding:5px 9px;
+    border-radius:15px;
+    font-size:10px;
+    font-weight:bold;
+}
+
+.card h3{
+    font-size:21px;
+    margin-bottom:7px;
+}
+
+.card p{
+    color:#9ba8c0;
+    font-size:14px;
+    min-height:40px;
+}
+
+.badge{
+    display:inline-block;
+    margin:12px 0;
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.free{
+    background:#123f30;
+    color:#3cffb0;
+}
+
+.premium{
+    background:#443400;
+    color:#ffd000;
+}
+
+.use-btn{
+    width:100%;
+    border:0;
+    padding:12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:bold;
+    background:#ffc400;
+    color:#111;
+}
+
+.free-btn{
+    background:#16b98b;
+    color:white;
+}
+
+.footer{
+    text-align:center;
+    padding:25px;
+    color:#71809d;
+    border-top:1px solid #182541;
+}
+
+@media(max-width:600px){
+    .header{
+        padding:18px 20px;
+    }
+
+    .logo{
+        font-size:20px;
+    }
+
+    .hero h1{
+        font-size:30px;
+    }
+
+    .themes{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+        Cric <span>Score Board Pro</span>
+    </div>
+
+    <a class="back-btn" href="index.html">
+        ← Home
+    </a>
+
+</header>
+
+
+<section class="hero">
+
+    <h1>
+        Choose Your <span>Overlay Theme</span>
+    </h1>
+
+    <p>
+        Select a professional live cricket scoreboard overlay for your stream.
+    </p>
+
+</section>
+
+
+<main class="container">
+
+    <h2 class="section-title">
+        <span>Free</span> Overlay
+    </h2>
+
+    <div class="themes">
+
+        <!-- FREE THEME -->
+
+        <div class="card">
+
+            <div class="preview preview-one">
+
+                <div class="live">● LIVE</div>
+
+                <div class="score">
+
+                    <div class="team">
+                        TEAM A<br>
+                        <strong>127/4</strong>
+                    </div>
+
+                    <div>
+                        15.2<br>
+                        OVERS
+                    </div>
+
+                    <div class="team">
+                        TEAM B<br>
+                        <strong>98/3</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <h3>Official Free Theme</h3>
+
+            <p>
+                Standard Cric Score Board Pro overlay with our website branding.
+            </p>
+
+            <span class="badge free">
+                FREE
+            </span>
+
+            <button class="use-btn free-btn"
+                onclick="useTheme('Free Theme')">
+                Use Free Theme
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <h2 class="section-title">
+        <span>Premium</span> Overlay Themes
+    </h2>
+
+
+    <div class="themes">
+
+
+        <!-- PREMIUM THEME 1 -->
+
+        <div class="card">
+
+            <div class="preview preview-two">
+
+                <div class="live">● LIVE</div>
+
+                <div class="score">
+
+                    <div class="team">
+                        PAK XI<br>
+                        <strong>156/5</strong>
+                    </div>
+
+                    <div>
+                        18.4<br>
+                        OVERS
+                    </div>
+
+                    <div class="team">
+                        INDIA XI<br>
+                        <strong>142/6</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <h3>Royal Purple</h3>
+
+            <p>
+                Stylish purple and gold overlay for professional cricket streams.
+            </p>
+
+            <span class="badge premium">
+                PREMIUM
+            </span>
+
+            <button class="use-btn"
+                onclick="premiumMessage('Royal Purple')">
+                Use Theme
+            </button>
+
+        </div>
+
+
+        <!-- PREMIUM THEME 2 -->
+
+        <div class="card">
+
+            <div class="preview preview-three">
+
+                <div class="live">● LIVE</div>
+
+                <div class="score">
+
+                    <div class="team">
+                        AL MAHMOOD<br>
+                        <strong>127/4</strong>
+                    </div>
+
+                    <div>
+                        15.2<br>
+                        OVERS
+                    </div>
+
+                    <div class="team">
+                        FINAL XI<br>
+                        <strong>98/7</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <h3>Stadium Green</h3>
+
+            <p>
+                Modern green stadium style designed for live match broadcasting.
+            </p>
+
+            <span class="badge premium">
+                PREMIUM
+            </span>
+
+            <button class="use-btn"
+                onclick="premiumMessage('Stadium Green')">
+                Use Theme
+            </button>
+
+        </div>
+
+
+        <!-- PREMIUM THEME 3 -->
+
+        <div class="card">
+
+            <div class="preview preview-four">
+
+                <div class="live">● LIVE</div>
+
+                <div class="score">
+
+                    <div class="team">
+                        GOLD XI<br>
+                        <strong>189/3</strong>
+                    </div>
+
+                    <div>
+                        19.1<br>
+                        OVERS
+                    </div>
+
+                    <div class="team">
+                        STAR XI<br>
+                        <strong>151/6</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <h3>Golden Pro</h3>
+
+            <p>
+                Premium gold design created for high-quality tournament broadcasts.
+            </p>
+
+            <span class="badge premium">
+                PREMIUM
+            </span>
+
+            <button class="use-btn"
+                onclick="premiumMessage('Golden Pro')">
+                Use Theme
+            </button>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+<footer class="footer">
+
+    © 2026 Cric Score Board Pro — Live Cricket Overlay System
+
+</footer>
+
+
+<script>
+
+function useTheme(theme){
+
+    alert(
+        "Selected: " + theme +
+        "\n\nYour Free Overlay will be connected to your live match system in the next step."
+    );
+
+}
+
+
+function premiumMessage(theme){
+
+    alert(
+        theme +
+        " is a Premium Theme.\n\n" +
+        "Please subscribe to a Premium Package to unlock this overlay."
+    );
+
+}
+
+</script>
+
+</body>
+</html>
